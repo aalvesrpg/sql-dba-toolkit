@@ -1,11 +1,10 @@
 # Database Administration Scripts Repository (sql-dba-toolkit)
 
-
 <div align="center">
   <img src="https://github.com/aalvesrpg/sql-dba-toolkit/assets/142286787/a4efa97f-0361-4122-958a-d7e6ef560a1c" alt="banner_git_sql" style="max-width: 100%; height: auto;">
 </div>
 
-##
+## Introduction
 
 Welcome to the Database Administration Scripts Repository! This repository contains a collection of SQL scripts for managing and administering relational databases like SQL Server, Oracle, and PostgreSQL. These scripts cover various aspects of database administration, from user management to performance optimization.
 
