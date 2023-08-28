@@ -32,7 +32,7 @@ WHERE
 ORDER BY
     StartTime DESC;
 
--- OR
+-- Other way bellow
 
 SELECT
     [EventTime],
