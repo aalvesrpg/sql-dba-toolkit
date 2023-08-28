@@ -32,3 +32,23 @@ WHERE
 ORDER BY
     Tabela,
     Indice
+
+-- other way
+
+-- Identifying uncompressed tables
+SELECT 
+    OBJECT_SCHEMA_NAME(t.[object_id]) AS NomeEsquema,
+    t.[name] AS NomeTabela,
+    'Tabela' AS TipoObjeto
+FROM sys.tables t
+WHERE t.[is_compressed] = 0;
+
+-- Identifying uncompressed indexes
+SELECT 
+    OBJECT_SCHEMA_NAME(t.[object_id]) AS NomeEsquema,
+    t.[name] AS NomeTabela,
+    i.[name] AS NomeIndice,
+    'Índice' AS TipoObjeto
+FROM sys.tables t
+INNER JOIN sys.indexes i ON t.[object_id] = i.[object_id]
+WHERE i.[type] > 0 AND i.[is_compressed] = 0;
