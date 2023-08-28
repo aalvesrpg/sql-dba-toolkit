@@ -30,4 +30,42 @@ WHERE
     AND A.ObjectName <> 'telemetry_xevents'
     AND NOT (A.ApplicationName LIKE 'Red Gate%' OR A.ApplicationName LIKE '%Intellisense%' OR A.ApplicationName = 'DacFx Deploy')
 ORDER BY
-    StartTime DESC
+    StartTime DESC;
+
+-- OR
+
+SELECT
+    [EventTime],
+    [DatabaseName],
+    [ObjectName],
+    [EventType],
+    [TSQLCommand]
+FROM
+(
+    SELECT
+        [DatabaseName] = DB_NAME(dest.[database_id]),
+        dest.[object_name],
+        dest.[type_desc],
+        dest.[event_time],
+        dest.[statement],
+        [TSQLCommand] = 
+            CASE 
+                WHEN dest.[type] = 'RF' THEN 'REVERT'
+                ELSE dest.[statement]
+            END,
+        [EventType] = 
+            CASE 
+                WHEN dest.[type] = 'RF' THEN 'REVERT'
+                WHEN dest.[type] = 'SP' THEN 'Stored Procedure'
+                WHEN dest.[type] = 'TR' THEN 'Trigger'
+                WHEN dest.[type] = 'V' THEN 'View'
+                WHEN dest.[type] = 'P' THEN 'SQL Stored Procedure'
+                WHEN dest.[type] = 'FN' THEN 'SQL Scalar Function'
+                WHEN dest.[type] = 'TF' THEN 'SQL Table Function'
+                WHEN dest.[type] = 'U' THEN 'Table'
+                WHEN dest.[type] = 'AF' THEN 'Aggregate Function'
+                ELSE 'Unknown'
+            END
+    FROM sys.dm_ddl_log_events dest
+) AS DDLLog
+ORDER BY [EventTime] DESC;
